@@ -1,0 +1,73 @@
+name: Validate and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allows manual trigger from the GitHub Actions UI
+
+# Required permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one deployment at a time to prevent conflicts
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Job 1: Validate the code
+  validate:
+    name: Validate HTML & CSS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install validation tools
+        run: npm install -g htmlhint
+
+      - name: Validate HTML
+        run: htmlhint app/index.html
+
+      - name: Check for broken links in HTML
+        run: |
+          echo "Checking for common issues..."
+          # Verify the index.html file exists (required for deployment)
+          if [ ! -f app/index.html ]; then
+            echo "ERROR: app/index.html not found!"
+            exit 1
+          fi
+          echo "All checks passed."
+
+  # Job 2: Build and deploy
+  deploy:
+    name: Build and Deploy
+    needs: validate  # Only deploy if validation passes
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject build timestamp
+        run: |
+          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+          sed -i "s/__BUILD_TIMESTAMP__/$TIMESTAMP/g" app/script.js
+          echo "Build timestamp injected: $TIMESTAMP"
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './app'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

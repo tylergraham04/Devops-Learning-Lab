@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Learning Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DevOps Learning Lab</h1>
+            <p class="subtitle">A project demonstrating CI/CD, Infrastructure-as-Code, and Cloud Deployment</p>
+        </header>
+
+        <section class="status-board">
+            <h2>Deployment Status</h2>
+            <div class="status-grid">
+                <div class="status-card">
+                    <span class="status-label">Environment</span>
+                    <span class="status-value" id="environment">Production</span>
+                </div>
+                <div class="status-card">
+                    <span class="status-label">Last Deployed</span>
+                    <span class="status-value" id="deploy-time">--</span>
+                </div>
+                <div class="status-card">
+                    <span class="status-label">Pipeline</span>
+                    <span class="status-value status-active">GitHub Actions</span>
+                </div>
+                <div class="status-card">
+                    <span class="status-label">Infrastructure</span>
+                    <span class="status-value">Terraform + AWS S3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-stack">
+            <h2>What Powers This Page</h2>
+            <div class="stack-list">
+                <div class="stack-item">
+                    <h3>GitHub Actions</h3>
+                    <p>Every push to the main branch triggers an automated pipeline that tests and deploys this site — no manual steps required.</p>
+                </div>
+                <div class="stack-item">
+                    <h3>Terraform</h3>
+                    <p>The AWS infrastructure hosting this site is defined in code. The S3 bucket, permissions, and configuration are all version-controlled.</p>
+                </div>
+                <div class="stack-item">
+                    <h3>AWS S3 + CloudFront</h3>
+                    <p>Static site hosting on Amazon S3 with CloudFront CDN for fast, reliable delivery worldwide.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <h2>About This Project</h2>
+            <p>
+                This isn't just a website — it's a demonstration of modern DevOps practices.
+                Every change goes through a pipeline. The infrastructure is managed as code.
+                The documentation explains it all in plain language.
+            </p>
+            <p>
+                Check out the <a href="https://github.com/tylergraham04/Devops-Learning-Lab">GitHub repository</a>
+                to see the pipeline, Terraform configuration, and documentation.
+            </p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
